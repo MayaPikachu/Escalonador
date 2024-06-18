@@ -1,6 +1,6 @@
-import Interfaces.ControlInterface;
-import Interfaces.NotificationInterface;
-import Interfaces.SubmissionInterface;
+import interfaces.ControlInterface;
+import interfaces.NotificationInterface;
+import interfaces.SubmissionInterface;
 
 public class UserInterface implements Runnable, NotificationInterface {
 

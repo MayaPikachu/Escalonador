@@ -1,5 +1,5 @@
-import Interfaces.ControlInterface;
-import Interfaces.InterSchedulerInterface;
+import interfaces.ControlInterface;
+import interfaces.InterSchedulerInterface;
 import program.Program;
 
 import java.util.Queue;

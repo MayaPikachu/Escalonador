@@ -1,5 +1,5 @@
-import Interfaces.InterSchedulerInterface;
-import Interfaces.SubmissionInterface;
+import interfaces.InterSchedulerInterface;
+import interfaces.SubmissionInterface;
 import program.Program;
 import program.ProgramLoader;
 
