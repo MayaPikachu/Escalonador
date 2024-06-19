@@ -8,11 +8,13 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
 
     private final Queue<Program> blockedQueue;
     private final Queue<Program> readyQueue;
+    private final Queue<Program> executingQueue;
     private final int quantum;
 
-    public ShortTermScheduler(Queue<Program> blockedQueue, Queue<Program> readyQueue, int quantum) {
+    public ShortTermScheduler(Queue<Program> blockedQueue, Queue<Program> readyQueue, Queue<Program> executingQueue, int quantum) {
         this.blockedQueue = blockedQueue;
         this.readyQueue = readyQueue;
+        this.executingQueue = executingQueue;
         this.quantum = quantum;
     }
 
@@ -48,11 +50,12 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
 
     @Override
     public void addProcess(Program program) {
-
+        executingQueue.add(program);
+        readyQueue.remove(program);
     }
 
     @Override
     public int getProcessLoad() {
-        return 0;
+        return executingQueue.size() + readyQueue.size() + blockedQueue.size();
     }
 }
