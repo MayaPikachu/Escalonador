@@ -1,8 +1,9 @@
 package interfaces;
 
 import program.Program;
+import simulation.SimulatedProcess;
 
 public interface InterSchedulerInterface {
-    void addProcess(Program program);
+    void addProcess(SimulatedProcess program);
     int getProcessLoad();
 }
