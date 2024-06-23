@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 public class RandomProgramLoader implements ProgramLoader {
+    private static final int MAX_BLOCK_TIME = 20;
     @Override
     public Program loadProgram(String fileName) {
         if (fileName.startsWith("IO")) {
@@ -27,7 +28,7 @@ public class RandomProgramLoader implements ProgramLoader {
             numBlock = size - numBlock;
         }
         for (int i=0;i<numBlock;i++) {
-            int duration = Math.abs(rng.nextInt() % 10);
+            int duration = Math.abs(rng.nextInt() % MAX_BLOCK_TIME)+1;
             instructions.add(new BlockInstruction(duration));
         }
         for (int i=numBlock;i<size;i++) {
@@ -47,7 +48,7 @@ public class RandomProgramLoader implements ProgramLoader {
             instructions.add(new ExecuteInstruction());
         }
         for (int i=numExecute;i<size;i++) {
-            int duration = Math.abs(rng.nextInt() % 10);
+            int duration = Math.abs(rng.nextInt() % MAX_BLOCK_TIME)+1;
             instructions.add(new BlockInstruction(duration));
         }
         Collections.shuffle(instructions);
@@ -60,7 +61,7 @@ public class RandomProgramLoader implements ProgramLoader {
             if (rng.nextBoolean()) {
                 instructions.add(new ExecuteInstruction());
             } else {
-                int duration = Math.abs(rng.nextInt() % 10);
+                int duration = Math.abs(rng.nextInt() % MAX_BLOCK_TIME)+1;
                 instructions.add(new BlockInstruction(duration));
             }
         }

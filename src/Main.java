@@ -5,7 +5,7 @@ import simulation.UserInterface;
 
 public class Main {
     public static void main(String[] args) {
-        ShortTermScheduler shortTermScheduler = new ShortTermScheduler(500);
+        ShortTermScheduler shortTermScheduler = new ShortTermScheduler(200);
         LongTermScheduler longTermScheduler = new LongTermScheduler(5, shortTermScheduler, new RandomProgramLoader());
         UserInterface userInterface = new UserInterface(longTermScheduler, shortTermScheduler);
         shortTermScheduler.setNotificationObserver(userInterface);

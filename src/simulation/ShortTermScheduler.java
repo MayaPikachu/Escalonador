@@ -133,6 +133,7 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
                         Thread.sleep(quantum);
                     } catch (InterruptedException e) {
                     }
+                    updateBlockedQueue();
                 }
             }
         }
