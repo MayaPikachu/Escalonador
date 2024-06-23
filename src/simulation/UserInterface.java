@@ -6,6 +6,9 @@ import interfaces.SubmissionInterface;
 
 import javax.swing.*;
 
+/**
+ * Implements the user interface
+ */
 public class UserInterface implements Runnable, NotificationInterface {
 
     private final SubmissionInterface submissionInterface;

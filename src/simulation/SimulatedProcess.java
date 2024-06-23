@@ -3,6 +3,15 @@ package simulation;
 import program.BlockInstruction;
 import program.Program;
 
+/**
+ * Implements a process being simulated in the program.
+ * Encapsulates information about the program to make sure
+ * the short term scheduler has to have its own logic for
+ * determining whether the program is CPU-bound or IO-bound.
+ * It also stores the program data, and the current instruction.
+ * It provides an interface for checking whether the program is blocked or not,
+ * and implements the logic for executing an instruction.
+ */
 public class SimulatedProcess {
     private final Program program;
     private final long processId;
@@ -23,7 +32,7 @@ public class SimulatedProcess {
         return processId;
     }
 
-    public void executeInstruction(int quantum) {
+    public void runInstruction(int quantum) {
         System.out.printf("[%d] %s: Executing\n", getPid(), getName());
         try {
             Thread.sleep(quantum);

@@ -6,6 +6,9 @@ import interfaces.NotificationInterface;
 
 import java.util.*;
 
+/**
+ * Implements the short term scheduler
+ */
 public class ShortTermScheduler implements Runnable, ControlInterface, InterSchedulerInterface {
 
     private final Map<SimulatedProcess, SchedulerProcessData> processDataMap = new HashMap<>();
@@ -30,31 +33,28 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
         this.notificationObserver = notificationObserver;
     }
 
-    private void updateBlockTime() {
-        for (var process: blockedQueue) {
-            process.decrementBlockTime();;
-            if (!process.isBlocked()) {
-                blockedQueue.remove(process);
-                if (process.isDone()) {
-                    processDataMap.remove(process);
-                }
-
-            }
-        }
-    }
-    public void addReadyProcess(SimulatedProcess process) {
+    /**
+     * @param process A process that was unblocked.
+     * Puts a process that was just unblocked in the correct queue.
+     */
+    private void addReadyProcess(SimulatedProcess process) {
         if (processDataMap.get(process).isIoBound()) {
             ioBoundReadyQueue.add(process);
         } else {
             cpuBoundReadyQueue.add(process);
         }
     }
+
+    /**
+     * @return true if the process could be run.
+     * Attempts to run a process in the CPU-bound queue, if there are any.
+     */
     private boolean attemptRunCpuBoundProcess() {
         if (cpuBoundReadyQueue.isEmpty()) {
             return false;
         }
         SimulatedProcess process = cpuBoundReadyQueue.remove();
-        process.executeInstruction(quantum);
+        process.runInstruction(quantum);
         if (process.isDone()) {
             finalizeProcess(process);
             return true;
@@ -68,12 +68,17 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
         }
         return true;
     }
+
+    /**
+     * @return true if a process could be run.
+     * Attempts to run a process in the IO-bound queue, if there are any.
+     */
     private boolean attemptRunIoBoundProcess() {
         if (ioBoundReadyQueue.isEmpty()) {
             return false;
         }
         SimulatedProcess process = ioBoundReadyQueue.remove();
-        process.executeInstruction(quantum);
+        process.runInstruction(quantum);
         if (process.isDone()) {
             finalizeProcess(process);
             return true;
@@ -87,6 +92,10 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
         }
         return true;
     }
+
+    /**
+     * Goes through the entire blocked queue and checks for each process whether it should be unblocked or not.
+     */
     private void updateBlockedQueue() {
         int n = blockedQueue.size();
         for (int i=0;i<n;i++) {
@@ -100,6 +109,11 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
         }
     }
 
+    /**
+     * @param process The process to be finalized.
+     * Erases the data for a simulated process.
+     * Should be used after the process is done running.
+     */
     private void finalizeProcess(SimulatedProcess process) {
         processDataMap.remove(process);
     }
@@ -196,14 +210,22 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
         }
     }
 
+    /**
+     * @param process The simulated process.
+     * Adds a process to the current load of the simulation.
+     */
     @Override
-    public void addProcess(SimulatedProcess program) {
+    public void addProcess(SimulatedProcess process) {
         synchronized (mutex) {
-            cpuBoundReadyQueue.add(program);
-            processDataMap.put(program, new SchedulerProcessData());
+            cpuBoundReadyQueue.add(process);
+            processDataMap.put(process, new SchedulerProcessData());
         }
     }
 
+    /**
+     * @return The current process load, if the simulation is running.
+     * If the simulation is not currently running, it returns "Infinity" (which means you can't add any processes to the load)
+     */
     @Override
     public int getProcessLoad() {
         synchronized (mutex) {
@@ -214,6 +236,10 @@ public class ShortTermScheduler implements Runnable, ControlInterface, InterSche
         }
     }
 
+    /**
+     * A class that stores data about the simulation of a process.
+     * It is used to check whether the process should be considered IO-bound or CPU-bound.
+     */
     private static class SchedulerProcessData {
         public int executeCount = 0;
         public int blockCount = 0;

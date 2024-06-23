@@ -6,10 +6,12 @@ import interfaces.SubmissionInterface;
 import program.Program;
 import program.ProgramLoader;
 
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Long term scheduler implementation
+ */
 public class LongTermScheduler implements Runnable, SubmissionInterface {
 
     private NotificationInterface notificationObserver;
@@ -30,6 +32,9 @@ public class LongTermScheduler implements Runnable, SubmissionInterface {
         nextPid = 1;
     }
 
+    /**
+     * @param notificationObserver The observer to be notified when it gets a request to display the submission queue
+     */
     public void setNotificationObserver(NotificationInterface notificationObserver) {
         this.notificationObserver = notificationObserver;
     }
@@ -73,6 +78,10 @@ public class LongTermScheduler implements Runnable, SubmissionInterface {
         }
     }
 
+    /**
+     * @return The next pid to be used for the process
+     * This updates the pid
+     */
     private long useNextPid() {
         return nextPid++;
     }

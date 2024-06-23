@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * An automatic program generator that implements the program loader interface to be used for testing purposes.
+ */
 public class RandomProgramLoader implements ProgramLoader {
     private static final int MAX_BLOCK_TIME = 20;
     @Override

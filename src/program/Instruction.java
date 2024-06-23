@@ -1,5 +1,8 @@
 package program;
 
+/**
+ * A data class that represents a program instruction
+ */
 public class Instruction {
     private final InstructionType type;
 
